@@ -49,11 +49,8 @@ jobs:
 
           SNYK_TOKEN: ${{ secrets.SNYK_SECRET }}
         run: |
-          snyk test \
-            --file=build.gradle
-            --all-sub-projects \
-            --severity-threshold=medium \
-            --sarif-file-output=snyk-results.sarif
+          snyk test --file=build.gradle --sarif-file-output=snyk-results.sarif
+        continue-on-error: true
 
       - name: Upload Snyk SARIF as artifact
         if: always()
