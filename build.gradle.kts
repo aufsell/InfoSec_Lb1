@@ -28,7 +28,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-rest")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.apache.commons:commons-lang3:3.19.0")
+    implementation("org.apache.commons:commons-lang3:3.20.0")
 
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
@@ -41,7 +41,7 @@ dependencies {
 }
 configurations.all {
     resolutionStrategy {
-        force("org.apache.commons:commons-lang3:3.19.0")
+        force("org.apache.commons:commons-lang3:3.20.0")
     }
 }
 
@@ -50,7 +50,7 @@ tasks.withType<Test> {
 }
 
 spotbugs {
-    toolVersion.set("4.9.7")
+    toolVersion.set("4.9.8")
     reportLevel.set(Confidence.LOW)
     ignoreFailures.set(true)
     showStackTraces.set(true)
