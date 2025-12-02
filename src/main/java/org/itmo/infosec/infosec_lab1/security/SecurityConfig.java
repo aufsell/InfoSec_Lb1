@@ -15,11 +15,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-public class SecurityConfiguration {
+public class SecurityConfig {
 
     private final ApplicationUserDetailsService userDetailsService;
 
-    public SecurityConfiguration(ApplicationUserDetailsService userDetailsService) {
+    public SecurityConfig(ApplicationUserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
