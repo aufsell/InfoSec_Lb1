@@ -1,4 +1,4 @@
-name: Java CI with SpotBugs and Dependency Check
+name: Java CI with SpotBugs and Snyk
 
 on:
   push: {}
@@ -7,7 +7,6 @@ on:
 env:
   JAVA_VERSION: '17'
   JAVA_DISTRIBUTION: 'temurin'
-  DEPENDENCY_CHECK_PROJECT: 'InfoSec_Lb1'
   REPORTS_DIR: 'reports'
   SPOTBUGS_REPORT_DIR: 'build/reports/spotbugs/'
 
@@ -40,21 +39,32 @@ jobs:
           path: ${{ env.SPOTBUGS_REPORT_DIR }}
           if-no-files-found: warn
 
-      - name: Run Dependency Check
-        uses: dependency-check/Dependency-Check_Action@main
-        env:
-          JAVA_HOME: /opt/jdk
-        with:
-          project: ${{ env.DEPENDENCY_CHECK_PROJECT }}
-          path: './build/libs'
-          format: 'HTML'
-          out: ${{ env.REPORTS_DIR }}
-          args: >
-            --enableRetired
+      - name: Install Snyk CLI
+        run: |
+          npm install -g snyk
+          snyk --version
 
-      - name: Upload Dependency Check report
+      - name: Run Snyk dependency scan (Gradle)
+        env:
+
+          SNYK_TOKEN: ${{ secrets.SNYK_SECRET }}
+        run: |
+          snyk test \
+            --file=build.gradle \
+            --package-manager=gradle \
+            --all-sub-projects \
+            --severity-threshold=medium \
+            --sarif-file-output=snyk-results.sarif
+
+      - name: Upload Snyk SARIF as artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: dependency-check-report
-          path: ${{ env.REPORTS_DIR }}
-          if-no-files-found: warn
+          name: snyk-sarif-report
+          path: snyk-results.sarif
+
+      - name: Upload Snyk SARIF to GitHub Code Scanning
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: snyk-results.sarif
