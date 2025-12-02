@@ -44,7 +44,13 @@ configurations.all {
         force("org.apache.commons:commons-lang3:3.20.0")
     }
 }
-
+buildscript {
+    configurations.all {
+        resolutionStrategy {
+            force("org.apache.commons:commons-lang3:3.20.0")
+        }
+    }
+}
 tasks.withType<Test> {
     useJUnitPlatform()
 }
