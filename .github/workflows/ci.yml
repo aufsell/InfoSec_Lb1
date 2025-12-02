@@ -1,4 +1,4 @@
-name: Java CI with SpotBugs and Snyk
+name: CI with SpotBugs and Snyk
 
 on:
   push: {}
