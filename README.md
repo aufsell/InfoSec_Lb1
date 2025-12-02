@@ -22,7 +22,7 @@ Content-Type: application/json
 
 #### Аутентификация пользователя
 ```http
-POST auth/signin
+POST /auth/signin
 Content-Type: application/json
 
 {
@@ -63,13 +63,16 @@ Authorization: Bearer {jwt-token}
 POST /api/data
 Content-Type: application/json
 Authorization: Bearer {jwt-token}
-
+{
 Sample data with {<b></b> &} for testing
+}
 ````
 #### Ответ:
 
 ```http
+{
 Received & processed: {&lt;b&gt;&lt;/b&gt; &amp;}
+}
 ```
 
 #### Получение информации о пользователе
@@ -131,9 +134,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 ## Скриншоты отчетов
 
 ### SAST
-![img.png](img/dc.png)
+![img.jpg](img/dc.jpg)
 
 
 ### SCA
-![img.png](img/spotbug.png)
+![img.jpg](img/spotbug.jpg)
 
