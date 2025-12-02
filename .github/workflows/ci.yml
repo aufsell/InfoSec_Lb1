@@ -1,15 +1,60 @@
-name:  Java CI with SpotBugs and Dependency Check
+name: Java CI with SpotBugs and Dependency Check
 
 on:
   push: {}
   pull_request: {}
 
+env:
+  JAVA_VERSION: '17'
+  JAVA_DISTRIBUTION: 'temurin'
+  DEPENDENCY_CHECK_PROJECT: 'InfoSec_Lb1'
+  REPORTS_DIR: 'reports'
+  SPOTBUGS_REPORT_DIR: 'build/reports/spotbugs/'
+
 jobs:
-  sanity-check:
+  security-checks:
+    name: Build & Security Analysis
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      - name: Sanity check
-        run: echo "CI pipeline is running successfully ✔"
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+          cache: 'gradle'
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Build project and run SpotBugs
+        run: ./gradlew clean build spotbugsMain spotbugsTest
+
+      - name: Upload SpotBugs reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: spotbugs-analysis-report
+          path: ${{ env.SPOTBUGS_REPORT_DIR }}
+          if-no-files-found: warn
+
+      - name: Run Dependency Check
+        uses: dependency-check/Dependency-Check_Action@main
+        env:
+          JAVA_HOME: /opt/jdk
+        with:
+          project: ${{ env.DEPENDENCY_CHECK_PROJECT }}
+          path: './build/libs'
+          format: 'HTML'
+          out: ${{ env.REPORTS_DIR }}
+          args: >
+            --enableRetired
+
+      - name: Upload Dependency Check report
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-check-report
+          path: ${{ env.REPORTS_DIR }}
+          if-no-files-found: warn
