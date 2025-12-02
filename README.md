@@ -64,12 +64,12 @@ POST /api/data
 Content-Type: application/json
 Authorization: Bearer {jwt-token}
 {
-Sample data with {<b></b> &} for testing
+  "input": "Sample data with <b></b> & for testing"
 }
 ````
 #### Ответ:
 
-```http
+```
 {
 Received & processed: {&lt;b&gt;&lt;/b&gt; &amp;}
 }
