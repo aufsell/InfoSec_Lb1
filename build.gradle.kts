@@ -44,7 +44,7 @@ tasks.withType<Test> {
 }
 
 spotbugs {
-    toolVersion.set("4.8.0")
+    toolVersion.set("4.9.7")
     reportLevel.set(Confidence.LOW)
     ignoreFailures.set(true)
     showStackTraces.set(true)
