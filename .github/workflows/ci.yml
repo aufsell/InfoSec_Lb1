@@ -50,8 +50,6 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_SECRET }}
         run: |
           snyk test \
-            --file=build.gradle \
-            --package-manager=gradle \
             --all-sub-projects \
             --severity-threshold=medium \
             --sarif-file-output=snyk-results.sarif
