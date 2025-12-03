@@ -129,14 +129,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 ### 4. Статический анализ и проверка зависимостей
 - SpotBugs для выявления потенциальных уязвимостей / багов коде
-- OWASP Dependency Check для аналиа зависимостей на известные CVE
+- SNYK для аналиа зависимостей на известные CVE
 
 ## Скриншоты отчетов
 
 ### SAST
-![img.jpg](img/dc.jpg)
+![img.jpg](img/spotbug.jpg)
 
 
 ### SCA
-![img.jpg](img/spotbug.jpg)
+![img.jpg](img/snyk.jpg)
 
